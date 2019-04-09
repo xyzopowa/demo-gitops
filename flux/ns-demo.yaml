@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    app: myapp
+    istio-injection: enabled
+  annotations:
+    owner: CE-CLOUD
+    cost-center: 50001Z0075-001
+  name: gitops-demo

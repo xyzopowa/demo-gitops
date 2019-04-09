@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flux-helm-operator
+  namespace: decathlon-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: flux-helm-operator
+  template:
+    metadata:
+      labels:
+        name: flux-helm-operator
+      annotations:
+        prometheus.io/scrape: "true"
+    spec:
+      serviceAccountName: flux
+      volumes:
+      - name: git-key
+        secret:
+          secretName: flux-git-deploy
+          defaultMode: 0400 
+      containers:
+      - name: flux-helm-operator
+        image: quay.io/weaveworks/helm-operator:0.6.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 3030
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        volumeMounts:
+        - name: git-key
+          mountPath: /etc/fluxd/ssh
+        args:
+        - --git-timeout=120s

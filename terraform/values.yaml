@@ -1,0 +1,8 @@
+helmOperator:
+  git:
+    secretName: "flux-git-deploy"
+
+git:
+  url: "git@github.com:dktunited/demo-gitops.git"
+  branch: "master"
+  path: ""

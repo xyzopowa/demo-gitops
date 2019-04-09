@@ -1,0 +1,27 @@
+---
+apiVersion: flux.weave.works/v1beta1
+kind: HelmRelease
+metadata:
+  name: myapp
+  namespace: gitops-demo
+  annotations:
+    #flux.weave.works/automated: "true"
+    #flux.weave.works/tag.chart-image: "glob:1.0.*-master"
+spec:
+  releaseName: myapp
+  chart:
+    git: git@github.com:skhedim/gitops-demo-helm.git
+    path: charts/myapp
+    ref: master
+  values:
+    image:
+      repository: registry-eu.subsidia.org/kubernetes/myapp
+      tag: 1.0.8-master
+      canary:
+        enabled: true
+        istioIngress:
+          enabled: true
+          gateway: cloudservices-gw.istio-system.svc.cluster.local
+          host: myapp.subsidia.org
+        loadtest:
+          enabled: true

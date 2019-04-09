@@ -1,0 +1,70 @@
+image:
+  repository: docker.io/alpine
+  tag: 1.0.0
+  pullPolicy: Always
+  registrysecret: regcred
+
+service:
+  type: ClusterIP
+  port: 80
+
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 2
+  cpu: 80
+  memory: 512Mi
+
+canary:
+  enabled: true
+  istioIngress:
+    enabled: true
+    # Istio ingress gateway name
+    gateway: cloudservices-gw.istio-system.svc.cluster.local
+    host: myapp.subsidia.org
+  analysis:
+    # schedule interval (default 60s)
+    interval: 15s
+    # max number of failed metric checks before rollback
+    threshold: 10
+    # max traffic percentage routed to canary
+    # percentage (0-100)
+    maxWeight: 50
+    # canary increment step
+    # percentage (0-100)
+    stepWeight: 5
+  thresholds:
+    # minimum req success rate (non 5xx responses)
+    # percentage (0-100)
+    successRate: 99
+    # maximum req duration P99
+    # milliseconds
+    latency: 500
+  loadtest:
+    enabled: true
+    # load tester address
+    url: http://flagger-loadtester.gitops-demo/
+
+resources:
+  limits:
+  requests:
+    cpu: 100m
+    memory: 32Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+nameOverride: ""
+fullnameOverride: ""
+
+logLevel: info
+
+faults:
+  delay: false
+  error: false
+
+httpServer:
+  timeout: 30s
