@@ -10,7 +10,7 @@ jobs:
       - run:
           name: run build
           command: |
-            dep ensure
+            dep init -v
             go build -v
   deploy:
     docker:
