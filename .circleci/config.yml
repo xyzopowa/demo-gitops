@@ -6,6 +6,7 @@ jobs:
     working_directory: /go/src/github.com/skhedim/demo-gitops
     steps:
       - checkout
+         path: ~/app
       - run: go get -u github.com/golang/dep/cmd/dep
       - run:
           name: run build
