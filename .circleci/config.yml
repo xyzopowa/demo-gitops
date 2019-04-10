@@ -3,10 +3,10 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.9
-    working_directory: /go/src/github.com/skhedim/demo-gitops
     steps:
       - checkout
-         path: ~/app
+      - working_directory: /go/src/github.com/skhedim/demo-gitops
+      - run: cp ~/project/app/* .
       - run: go get -u github.com/golang/dep/cmd/dep
       - run:
           name: run build
