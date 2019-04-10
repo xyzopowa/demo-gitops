@@ -16,7 +16,7 @@ jobs:
           working_directory: /go/src/github.com/skhedim/demo-gitops
           command: |
             dep init -v
-            go build -o ~/project/docker -v
+            go build -v -o ~/project/docker/myapp
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
