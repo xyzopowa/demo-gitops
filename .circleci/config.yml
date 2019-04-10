@@ -7,7 +7,9 @@ jobs:
       - checkout
       - run: 
           name: prepare environment
+          working_directory: ~/project
           command: |
+            mkdir -p /go/src/github.com/skhedim/demo-gitops
             cp ~/project/app/* /go/src/github.com/skhedim/demo-gitops
             go get -u github.com/golang/dep/cmd/dep
       - run:
