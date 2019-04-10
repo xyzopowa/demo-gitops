@@ -15,21 +15,21 @@ jobs:
           name: run build
           working_directory: /go/src/github.com/skhedim/demo-gitops
           command: |
-            dep init -v
+            dep init -v 
             go build -v -o ~/project/docker/myapp
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: Install Docker client
-          command: |
-            set -x
-            VER="17.03.0-ce"
-            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
-            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-            mv /tmp/docker/* /usr/bin
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - docker
+  push-image:
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
       - run:
           name: Build and push Docker image
-          working_directory: ~/project/docker
+          working_directory: /tmp/workspace
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               docker build -t ${DOCKER_REPO}:${CIRCLE_BUILD_NUM} .
@@ -41,7 +41,7 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - deploy:
+      - push-image:
           requires:
             - build
           filters:
