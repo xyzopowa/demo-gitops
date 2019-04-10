@@ -6,8 +6,7 @@ jobs:
     steps:
       - checkout
       - run: 
-          name: prepare environment
-          working_directory: ~/project
+          name: Prepare build environment
           command: |
             mkdir -p /go/src/github.com/skhedim/demo-gitops
             cp ~/project/app/* /go/src/github.com/skhedim/demo-gitops
@@ -17,27 +16,19 @@ jobs:
           working_directory: /go/src/github.com/skhedim/demo-gitops
           command: |
             dep init -v
-            go build -v
-  deploy:
-    docker:
-      - image: docker:17.05.0-ce-git
-    steps:
+            go build -v -o ~/project/docker/myapp
       - run:
           name: Build and push Docker image
+          working_directory: ~/project/docker
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               docker build -t ${DOCKER_REPO}:${CIRCLE_BUILD_NUM} .
               docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} https://index.docker.io/v1/                                                 
               docker push ${DOCKER_REPO}:${CIRCLE_BUILD_NUM}
-            fi
+            fi      
+ 
 workflows:
   version: 2
-  build-deploy:
+  build:
     jobs:
       - build
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
