@@ -26,10 +26,10 @@ jobs:
       - image: docker:17.05.0-ce-git
     steps:
       - attach_workspace:
-          at: /tmp/workspace/docker
+          at: /tmp/workspace
       - run:
           name: Build and push Docker image
-          working_directory: /tmp/workspace
+          working_directory: /tmp/workspace/docker
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               docker build -t ${DOCKER_REPO}:${CIRCLE_BUILD_NUM} .
