@@ -5,9 +5,11 @@ jobs:
       - image: circleci/golang:1.9
     steps:
       - checkout
-      - working_directory: /go/src/github.com/skhedim/demo-gitops
-      - run: cp ~/project/app/* .
-      - run: go get -u github.com/golang/dep/cmd/dep
+      - run: 
+          name: prepare environment
+          working_directory: /go/src/github.com/skhedim/demo-gitops  
+          cp ~/project/app/* .
+          go get -u github.com/golang/dep/cmd/dep
       - run:
           name: run build
           command: |
