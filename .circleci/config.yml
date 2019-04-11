@@ -25,6 +25,7 @@ jobs:
     docker:
       - image: docker:stable-dind
     steps:
+      - setup_remote_docker
       - attach_workspace:
           at: /tmp/workspace
       - run:
