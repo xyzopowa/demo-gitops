@@ -59,42 +59,6 @@ resource "kubernetes_namespace" "gitops-demo" {
   }
 }
 
-resource "kubernetes_service_account" "flux" {
-  depends_on = ["kubernetes_namespace.gitops-demo"]
-  metadata {
-    labels {
-      name = "flux"
-    }
-    name = "flux"
-    namespace = "gitops-demo"
-  }
-  automount_service_account_token = "true"
-}
-
-resource "kubernetes_cluster_role_binding" "flux" {
-  depends_on = [ "kubernetes_service_account.tiller","kubernetes_namespace.gitops-demo" ]
-  lifecycle {
-    ignore_changes = ["*"]
-  }
-  metadata {
-    labels {
-      name = "flux"
-    }
-    name = "flux"
-  }
-
-  subject {
-    kind = "User"
-    name = "system:serviceaccount:gitops-demo:flux"
-    namespace = "gitops-demo"
-  }
-
-  role_ref {
-    kind  = "ClusterRole"
-    name = "cluster-admin"
-  }
-}
-
 data "helm_repository" "weaveworks" {
     name = "weaveworks"
     url  = "https://weaveworks.github.io/flux"
@@ -102,7 +66,7 @@ data "helm_repository" "weaveworks" {
 
 resource "helm_release" "flux" {
   name       = "flux"
-  repository = "{data.helm_repository.weaveworks.metadata.0.name}"
+  repository = "weaveworks"
   chart      = "flux"
   version    = "0.8.0"
 
