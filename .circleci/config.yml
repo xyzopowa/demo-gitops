@@ -23,7 +23,7 @@ jobs:
             - docker
   push-image:
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: docker:stable-dind
     steps:
       - attach_workspace:
           at: /tmp/workspace
