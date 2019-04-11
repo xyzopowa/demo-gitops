@@ -1,4 +1,4 @@
-GitOps/Canary CI/CD demo
+GitOps - Canary CI/CD demo
 ------------------------
 
 This is a step by step guide on how to set up a GitOps workflow with Istio/flagger and Weave Flux. GitOps is a way to do Continuous Delivery, it works by using Git as a source of truth for declarative infrastructure and workloads. In practice this means using git push instead of kubectl create/apply or helm install/upgrade.
