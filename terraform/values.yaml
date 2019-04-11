@@ -12,7 +12,7 @@ service:
 
 helmOperator:
   replicaCount: 1
-  create: false
+  create: true
   createCRD: true
   repository: quay.io/weaveworks/helm-operator
   tag: 0.7.1

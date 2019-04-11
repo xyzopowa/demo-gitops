@@ -44,7 +44,7 @@ resource "kubernetes_secret" "git-flux" {
   depends_on = ["kubernetes_namespace.gitops-demo"]
   metadata {
     name = "flux-git-deploy"
-    namespace = "gitops-demo"
+    namespace = "flux"
   }
   data {
     identity = "${tls_private_key.flux_repo.private_key_pem}"
