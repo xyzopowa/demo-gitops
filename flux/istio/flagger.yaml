@@ -4,6 +4,8 @@ kind: HelmRelease
 metadata:
   name: flagger
   namespace: "istio-system"
+    annotations:
+    flux.weave.works/ignore: 'true'
 spec:
   releaseName: flagger
   chart:

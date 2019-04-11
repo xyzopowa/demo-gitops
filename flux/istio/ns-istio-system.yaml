@@ -4,7 +4,6 @@ metadata:
   labels:
     app: istio
   annotations:
-    owner: CE-CLOUD
-    cost-center: 50001Z0075-001
+    flux.weave.works/ignore: 'true'
   #  flux.weave.works/ignore: 'true'
   name: istio-system

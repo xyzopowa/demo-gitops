@@ -8,7 +8,7 @@ Requirements
 
   * GCP Project;
   * GitHub token;
-  * helm, terraform, kubectl, gcloud and git binaries.
+  * helm, terraform, kubectl, gcloud, fluxctl and git binaries.
   * Fork this repo
   * CircleCi (Optionnal)
 
@@ -40,5 +40,30 @@ Start creating the cluster with terraform
 terraform init
 terraform plan
 terraform apply -auto-approve
+```
+
+Terraform will deploy:
+
+* A VPC and a subnet
+* A Public GKE cluster
+* Tiller for Helm
+* Weave Flux
+* Add the public key to the repo
+
+You now have the necessary environment to experiment with the concepts of gitops and canary deployments.
+
+Let's start to use Gitops
+-------------------------
+
+Now we will be able to deploy different applications via gitop on our cluster. Let's start by deploying the necessary infrastructure applications.
+
+Go to the flux/istio folder and change the flux.weave.works/ignore annotation:'true' to false on all yaml files
+
+```bash
+cd flux/istio
+sed -i "s/true/false/" *.yaml
+
+# Forces the repo synchronization
+fluxctl sync --k8s-fwd-ns flux
 ```
 
