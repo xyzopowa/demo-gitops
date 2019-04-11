@@ -52,7 +52,7 @@ variable "master_authorized_networks_config" {
 variable "subnet_cidr" {
   type        = "string"
   description = "subnetwork"
-  default = "10.0.0.0/8"
+  default = "10.164.0.0/20"
 }
 
 ##########################

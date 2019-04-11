@@ -3,7 +3,7 @@
 data "google_client_config" "current" {
 }
 
-## Tiller deployment
+## Tiller service account
 
 resource "kubernetes_service_account" "tiller" {
   metadata {
@@ -52,10 +52,10 @@ resource "kubernetes_secret" "git-flux" {
   type = "Opaque"
 }
 
-
 resource "kubernetes_namespace" "gitops-demo" {
+  depends_on  = ["google_container_cluster.primary"]
   metadata {
-    name = "gitops-demo"
+    name = "flux"
   }
 }
 
@@ -65,7 +65,9 @@ data "helm_repository" "weaveworks" {
 }
 
 resource "helm_release" "flux" {
+   depends_on = ["google_container_cluster.primary","kubernetes_cluster_role_binding.tiller"]
   name       = "flux"
+  namespace  = "flux"
   repository = "weaveworks"
   chart      = "flux"
   version    = "0.8.0"
