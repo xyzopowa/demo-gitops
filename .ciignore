@@ -1,0 +1,10 @@
+.circleci/*
+charts/*
+docker/*
+flux/*
+terraform/*
+.git/*
+.gitignore
+.ciignore
+*.md
+LICENSE
