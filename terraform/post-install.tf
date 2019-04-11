@@ -76,3 +76,12 @@ resource "helm_release" "flux" {
     "${file("values.yaml")}"
   ]
 }
+
+### Github deploy key
+
+resource "github_repository_deploy_key" "add_flux_key" {
+    title = "flux key"
+    repository = "${var.git_repo}"
+    key = "${tls_private_key.flux_repo.public_key_openssh}"
+    read_only = "false"
+}

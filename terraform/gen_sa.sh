@@ -4,6 +4,9 @@ _TFM_GC_SA=terraform
 _TFM_GC_SAFULL="${_TFM_GC_SA}@${GOOGLE_PROJECT}.iam.gserviceaccount.com"
 CREDFILE="./credentials.json"
 
+# Add repo name to TF variables
+sed -i "s&your_repo&$GIT_REPO&" terraform.tfvars
+
 # enable KMS API
 gcloud services enable \
   cloudapis.googleapis.com \

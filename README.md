@@ -7,8 +7,10 @@ Requirements
 ------------
 
   * GCP Project;
-  * CircleCI and GitHub accounts;
+  * GitHub token;
   * helm, terraform, kubectl, gcloud and git binaries.
+  * Fork this repo
+  * CircleCi (Optionnal)
 
 Spin up the environment
 -----------------------
@@ -20,11 +22,15 @@ git clone git@github.com/skhedim/demo-gitops
 cd demo-gitops/terraform
 ```
 
-Export your Project ID to a variable, and then execute the script.
+Export your Project ID and your github token to a variable, and then execute the script.
 
 ```bash
 # script that creates a service account to deploy the cluster via terraform.
+
 export GOOGLE_PROJECT=<your_projectid>
+export GITHUB_TOKEN=<your_github_token>
+export GIT_REPO=<your_git_repo>
+
 bash gen_sa.sh
 ```
 
@@ -35,3 +41,4 @@ terraform init
 terraform plan
 terraform apply -auto-approve
 ```
+
