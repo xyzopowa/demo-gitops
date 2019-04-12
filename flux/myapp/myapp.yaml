@@ -3,8 +3,9 @@ apiVersion: flux.weave.works/v1beta1
 kind: HelmRelease
 metadata:
   name: myapp
-  namespace: gitops-demo
+  namespace: myapp
   annotations:
+    flux.weave.works/ignore: 'true'
     flux.weave.works/automated: "true"
     flux.weave.works/tag.chart-image: "glob:1.0.*-master"
 spec:

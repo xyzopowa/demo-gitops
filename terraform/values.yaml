@@ -102,7 +102,7 @@ gpgKeys:
 git:
   # URL of git repo with Kubernetes manifests; e.g. git.url=ssh://git@github.com/weaveworks/flux-get-started
   #url: ""
-  url: "git@gitlab.com:OWNER/GIT_REPO.git"
+  url: "git@github.com:OWNER/GIT_REPO.git"
   # Branch of git repo to use for Kubernetes manifests
   branch: "master"
   # Path within git repo to locate Kubernetes manifests (relative path)

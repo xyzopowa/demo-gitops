@@ -23,8 +23,6 @@ spec:
         prometheus.io/scrape: 'true'
     spec:
       terminationGracePeriodSeconds: 30
-      imagePullSecrets:
-      - name: "{{ .Values.image.registrysecret }}"
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

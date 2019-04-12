@@ -15,10 +15,10 @@ Requirements
 Spin up the environment
 -----------------------
 
-Clone the repo on your PC, and then go to the terraform folder
+Fork the repo to your account and clone the repo on your PC, and then go to the terraform folder
 
 ```bash
-git clone git@github.com/skhedim/demo-gitops
+git clone git@github.com:<your_account>/demo-gitops
 cd demo-gitops/terraform
 ```
 
@@ -29,7 +29,7 @@ Export your Project ID and your github token to a variable, and then execute the
 
 export GOOGLE_PROJECT=<your_projectid>
 export GITHUB_TOKEN=<your_github_token>
-export GIT_REPO=<your_git_repo>
+export GIT_REPO=demo-gitops
 export GITHUB_ORGANIZATION=<your_account_name>
 
 bash gen_sa.sh
@@ -70,7 +70,7 @@ git add *.yaml && git commit -m "change ignore annotation to false [ci skip]" &&
 fluxctl sync --k8s-fwd-ns flux
 
 # Show flux logs
-kubectl -n flux logs -f $(kubectl -n flux get pods -l name=flux -o jsonpath='{.items[0].metadata.name}')
+kubectl -n flux logs -f $(kubectl -n flux get pods -l app=flux -o jsonpath='{.items[0].metadata.name}')
 ```
 
 Flux reads the repo when the "fluxctl sync" command is launched, and applies the configuration present in the flux folder. The annotation flux.weave.works/ignore: true prevented the deployment. 

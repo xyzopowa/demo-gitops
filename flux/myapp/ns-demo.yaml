@@ -5,5 +5,5 @@ metadata:
     app: myapp
     istio-injection: enabled
   annotations:
-    flux.weave.works/automated: "true"
+    flux.weave.works/ignore: 'true'
   name: myapp
