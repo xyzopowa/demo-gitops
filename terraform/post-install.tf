@@ -65,7 +65,7 @@ data "helm_repository" "weaveworks" {
 }
 
 resource "helm_release" "flux" {
-   depends_on = ["google_container_cluster.primary","kubernetes_cluster_role_binding.tiller"]
+  depends_on = ["google_container_cluster.primary","kubernetes_cluster_role_binding.tiller"]
   name       = "flux"
   namespace  = "flux"
   repository = "weaveworks"
@@ -80,6 +80,7 @@ resource "helm_release" "flux" {
 ### Github deploy key
 
 resource "github_repository_deploy_key" "add_flux_key" {
+    depends_on  = ["tls_private_key.flux_repo"]
     title = "flux key"
     repository = "${var.git_repo}"
     key = "${tls_private_key.flux_repo.public_key_openssh}"

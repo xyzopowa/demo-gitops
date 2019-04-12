@@ -6,6 +6,8 @@ CREDFILE="./credentials.json"
 
 # Add repo name to TF variables
 sed -i "s&your_repo&$GIT_REPO&" terraform.tfvars
+sed -i "s/OWNER/$GITHUB_ORGANIZATION/" values.yaml
+sed -i "s/GIT_REPO/$GIT_REPO/" values.yaml
 
 # enable KMS API
 gcloud services enable \

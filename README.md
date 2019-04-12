@@ -30,6 +30,7 @@ Export your Project ID and your github token to a variable, and then execute the
 export GOOGLE_PROJECT=<your_projectid>
 export GITHUB_TOKEN=<your_github_token>
 export GIT_REPO=<your_git_repo>
+export GITHUB_ORGANIZATION=<your_account_name>
 
 bash gen_sa.sh
 ```
@@ -202,4 +203,9 @@ spec:
     hosts:
     - "*"
 ```
+
+Application Deployment with Helm
+--------------------------------
+
+For the example we will deploy an application managed with Helm. The chart is directly in the repo. It contains the configuration of the application as well as Flagger's configuration for the Canary deployment
 
