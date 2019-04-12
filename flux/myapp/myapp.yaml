@@ -7,7 +7,7 @@ metadata:
   annotations:
     flux.weave.works/ignore: 'true'
     flux.weave.works/automated: "true"
-    flux.weave.works/tag.chart-image: "glob:1.0.*-master"
+    flux.weave.works/tag.chart-image: "glob:*"
 spec:
   releaseName: myapp
   chart:
@@ -16,8 +16,8 @@ spec:
     ref: master
   values:
     image:
-      repository: docker.io/sebkhedim/demo-gitops
-      tag: 1
+      repository: REGISTRY/REPO/demo-gitops
+      tag: TAG
       canary:
         enabled: true
         istioIngress:

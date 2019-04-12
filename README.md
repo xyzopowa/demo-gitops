@@ -183,7 +183,7 @@ The istio gateway was deployed by flux via the istio-gw.yaml file of the repo. T
 
 ```bash
 # Check the Istio GW configuration
-kubectl get gateway -n istio-system  - o yaml
+kubectl get gateway -n istio-system  -o yaml
 
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -207,5 +207,106 @@ spec:
 Application Deployment with Helm
 --------------------------------
 
-For the example we will deploy an application managed with Helm. The chart is directly in the repo. It contains the configuration of the application as well as Flagger's configuration for the Canary deployment
+### CircleCI pipeline
+
+ We need a CI pipeline to build and push our application to a public registry. We'll use circleCI for the demo. you just need to connect your repo to a project in CircleCI and set the following variables.
+
+* DOCKER_PASS: Password of your account (Docker Hub only)
+* DOCKER_USER: Login of your account (Docker Hub only)
+
+### Application code
+
+The demo application is just a web server in Golang displaying a html page. The code is in the app folder of the repo.
+
+Now your CI pipeline should work, try to modify the index.html file or change the image in the docker/static folder to change the website design.
+
+```bash
+# Change the welcome message
+vi docker/static/index.html
+git add index.html && git commit -m "update website" && git push
+```
+Each modification in the repo will launch a new pipeline, and a new image will be build with a new tag (incremented with the build number)
+
+### Application deployment
+
+For the example we will deploy an application managed with Helm. The chart is directly in the repo. It contains the configuration of the application as well as Flagger's configuration for the Canary deployment.
+
+Let's look at the different values that can be configured, in the flux/istio/myapp.yaml file.
+
+```yaml
+apiVersion: flux.weave.works/v1beta1
+kind: HelmRelease
+metadata:
+  name: myapp
+  namespace: myapp
+  annotations:
+    flux.weave.works/ignore: 'true'
+    flux.weave.works/automated: "true" # Check periodically in the registry for a new image
+    flux.weave.works/tag.chart-image: "glob:1.0.*-master" # filter to update the image
+spec:
+  releaseName: myapp 
+  chart:
+    git: git@github.com:skhedim/demo-gitops.git
+    path: charts/myapp
+    ref: master
+  values:
+    image:
+      repository: REPO/demo-gitops # The image to use for the app
+      tag: 1
+      canary:
+        enabled: true
+        istioIngress:
+          enabled: true
+          gateway: cloud-gw.istio-system.svc.cluster.local # Istio Gateway
+          host: myapp.example.org # the DNS name of the app
+        loadtest:
+          enabled: true
+```
+
+Change the repo with your account and commit the changes.
+
+```bash
+# Change the docker hub repo with yours
+
+cd flux/myapp
+sed -i "s/true/false/" *.yaml
+sed -i "s/REPO/<your_dockerhub_account>" myapp.yaml
+git add *.yaml && git commit -m "change ignore annotation to false [ci skip]" && git push
+fluxctl sync --k8s-fwd-ns flux
+
+# Check if you can see the canary configuration
+
+```bash
+kubectl get canary -n myapp
+NAME    STATUS        WEIGHT   LASTTRANSITIONTIME
+myapp   Initialized   0        2019-04-01T08:33:42Z
+
+# Check if you can see the index page
+
+kubectl -n myapp port-forward $(kubectl -n myapp get pods -l app=myapp-primary -o jsonpath='{.items[0].metadata.name}') 80:8080
+
+# You should see your welcome message with the URL: http://localhost:8080
+```
+
+Canary deployment
+-----------------
+
+Now everything is in place to test a canary deployment. Flagger monitors the myapp deployment,and waits for the image to be changed to create a second deployment and a virtual service.
+
+In parallel Flux monitors the registry and waits for a new tag to be pushed into the registry to update the deployment.
+
+Finally circleCI is waiting for a new commit to build a new image and increment the tag with the build number.
+
+Modify the index.html file again to trigger a new build
+
+```bash
+# Change the welcome message
+
+vi docker/static/index.html
+git add index.html && git commit -m "update website" && git push
+
+# Wait for flux to detect the new image in the registry
+
+kubectl -n flux logs -f $(kubectl -n flux get pods -l app=flux -o jsonpath='{.items[0].metadata.name}')
+```
 

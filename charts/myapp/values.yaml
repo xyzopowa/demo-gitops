@@ -1,6 +1,6 @@
 image:
-  repository: docker.io/alpine
-  tag: 1.0.0
+  repository: registry/myapp
+  tag: 1
   pullPolicy: Always
 
 service:
@@ -64,6 +64,3 @@ logLevel: info
 faults:
   delay: false
   error: false
-
-httpServer:
-  timeout: 30s
