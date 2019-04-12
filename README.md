@@ -179,7 +179,7 @@ A VirtualService defines the rules that control how requests for a service are r
 
 ### Check the configuration
 
-The istio gateway was deployed by flow via the istio-gw.yam file of the repo. The Virtual service part will be automatically created by Flagger. We will now have to deploy our application and create the Canary file to Flagger
+The istio gateway was deployed by flux via the istio-gw.yaml file of the repo. The Virtual service part will be automatically created by Flagger. We will now have to deploy our application and create the Canary file to Flagger
 
 ```bash
 # Check the Istio GW configuration

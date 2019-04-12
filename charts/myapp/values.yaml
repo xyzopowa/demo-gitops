@@ -19,8 +19,8 @@ canary:
   istioIngress:
     enabled: true
     # Istio ingress gateway name
-    gateway: cloudservices-gw.istio-system.svc.cluster.local
-    host: myapp.subsidia.org
+    gateway: cloud-gw.istio-system.svc.cluster.local
+    host: myapp.example.com
   analysis:
     # schedule interval (default 60s)
     interval: 15s
