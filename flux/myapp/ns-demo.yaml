@@ -4,4 +4,6 @@ metadata:
   labels:
     app: myapp
     istio-injection: enabled
+  annotations:
+    flux.weave.works/automated: "true"
   name: myapp
