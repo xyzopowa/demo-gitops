@@ -8,13 +8,13 @@ jobs:
       - run: 
           name: Prepare build environment
           command: |
-            mkdir -p /go/src/github.com/${GITHUB_USERNAME}/demo-gitops
-            cp ~/project/app/* /go/src/github.com/${GITHUB_USERNAME}/demo-gitops
+            mkdir -p /go/src/github.com/${CIRCLE_USERNAME}/demo-gitops
+            cp ~/project/app/* /go/src/github.com/${CIRCLE_USERNAME}/demo-gitops
             go get -u github.com/golang/dep/cmd/dep
       - run:
           name: run build
-          working_directory: /go/src/github.com/${GITHUB_USERNAME}/demo-gitops
           command: |
+            cd /go/src/github.com/${CIRCLE_USERNAME}/demo-gitops
             dep init -v 
             go build -v -o ~/project/docker/myapp
       - persist_to_workspace:
