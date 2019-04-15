@@ -33,9 +33,9 @@ jobs:
           working_directory: /tmp/workspace/docker
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker build -t demo-gitops:${CIRCLE_BUILD_NUM} .
+              docker build -t ${DOCKER_USER}/demo-gitops:${CIRCLE_BUILD_NUM} .
               docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} https://index.docker.io/v1/                                                 
-              docker push demo-gitops:${CIRCLE_BUILD_NUM}
+              docker push ${DOCKER_USER}/demo-gitops:${CIRCLE_BUILD_NUM}
             fi
 workflows:
   version: 2
