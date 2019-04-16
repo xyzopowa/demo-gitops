@@ -39,10 +39,6 @@ canary:
     # maximum req duration P99
     # milliseconds
     latency: 500
-  loadtest:
-    enabled: true
-    # load tester address
-    url: http://flagger-loadtester.gitops-demo/
 
 resources:
   limits:
