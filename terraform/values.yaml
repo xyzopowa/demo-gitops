@@ -1,8 +1,13 @@
+# Default values for flux.
+
+# Weave Cloud service token
+token: ""
+
 replicaCount: 1
 
 image:
-  repository: quay.io/weaveworks/flux
-  tag: 1.11.1
+  repository: docker.io/weaveworks/flux
+  tag: 1.12.0
   pullPolicy: IfNotPresent
   pullSecret:
 
@@ -14,8 +19,8 @@ helmOperator:
   replicaCount: 1
   create: true
   createCRD: true
-  repository: quay.io/weaveworks/helm-operator
-  tag: 0.7.1
+  repository: docker.io/weaveworks/helm-operator
+  tag: 0.8.0
   pullPolicy: IfNotPresent
   pullSecret:
   # Limit the operator scope to a single namespace
@@ -80,7 +85,7 @@ serviceAccount:
   create: true
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: flux
+  name:
 
 resources:
   requests:
@@ -95,6 +100,10 @@ tolerations: []
 
 affinity: {}
 
+extraVolumeMounts: []
+
+extraVolumes: []
+
 gpgKeys:
   # These keys will be imported into GPG in the Flux container.
   secretName: ""
@@ -102,7 +111,7 @@ gpgKeys:
 git:
   # URL of git repo with Kubernetes manifests; e.g. git.url=ssh://git@github.com/weaveworks/flux-get-started
   #url: ""
-  url: "git@github.com:OWNER/GIT_REPO.git"
+  url: "git@github.com:xyzopowa/demo-gitops.git"
   # Branch of git repo to use for Kubernetes manifests
   branch: "master"
   # Path within git repo to locate Kubernetes manifests (relative path)
@@ -156,6 +165,8 @@ registry:
   dockercfg:
     enabled: false
     secretName: ""
+    configFileName: /dockercfg/config.json
+
 memcached:
   repository: memcached
   tag: 1.4.25
@@ -209,3 +220,13 @@ extraEnvs: []
 
 prometheus:
   enabled: false
+
+# Add your own init container or uncomment and modify the given example.
+initContainers: {}
+#   flux-init:  # <- will be used as container name
+#     image: "busybox:1.30.1"
+#     imagePullPolicy: "IfNotPresent"
+#     command: ['sh', '-c', 'counter=0; until [ "$counter" -ge 30 ]; do if [ -f /tmp/flux-deploy-key/identity ]; then exit 0; else echo waiting for flux deploy key && sleep 1 && counter=$((counter+1)); fi; done; exit 1;']
+#     volumeMounts:
+#       - mountPath: /tmp/flux-deploy-key
+#         name: flux-deploy-key

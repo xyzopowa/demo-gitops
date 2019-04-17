@@ -70,7 +70,7 @@ resource "helm_release" "flux" {
   namespace  = "flux"
   repository = "weaveworks"
   chart      = "flux"
-  version    = "0.8.0"
+  version    = "0.9.0"
 
   values = [
     "${file("values.yaml")}"
