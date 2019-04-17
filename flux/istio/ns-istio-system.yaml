@@ -4,5 +4,5 @@ metadata:
   labels:
     app: istio
   annotations:
-    flux.weave.works/ignore: 'true'
+    flux.weave.works/ignore: 'false'
   name: istio-system
